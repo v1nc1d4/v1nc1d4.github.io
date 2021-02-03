@@ -219,7 +219,7 @@ figcaption a:hover {
 
 /* Small devices (landscape phones, 576px and up) */
 
-@media all and (min-width: 576px) {
+@media (min-width: 768px) {
     #rotate {
         position: relative;
         background: #252525 url(../img/rotate.png) no-repeat center;
@@ -235,7 +235,7 @@ figcaption a:hover {
     }
 }
 
-@media all and (min-width: 800px) and (min-height: 500px) {
+@media (min-width: 768px) and (max-width: 991px) {
     #btnContact,
     #home .social-media-buttons,
     .skills-item,
@@ -261,7 +261,7 @@ figcaption a:hover {
     }
 }
 
-@media (max-width: 1000px) {
+@media screen and (max-width: 1000px) {
     #contact-left {
         display: none;
     }
@@ -270,7 +270,7 @@ figcaption a:hover {
 
 /* Medium devices (tablets, 768px and up) */
 
-@media (max-width: 992px) {
+@media (max-width: 768px) {
     figcaption>p {
         font-size: 0.8rem;
     }
