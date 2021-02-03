@@ -1,5 +1,8 @@
 {
     "/norobots/": "http://v1nc1d4.github.io/404.html",
     "/assets/": "http://v1nc1d4.github.io/404.html",
+    "/assets/css/": "http://v1nc1d4.github.io/404.html"
+    "/assets/js/": "http://v1nc1d4.github.io/404.html"
+    "/assets/images/": "http://v1nc1d4.github.io/404.html"
     "/.github/": "http://v1nc1d4.github.io/404.html"
 }
