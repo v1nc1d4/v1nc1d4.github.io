@@ -219,7 +219,7 @@ figcaption a:hover {
 
 /* Small devices (landscape phones, 576px and up) */
 
-/*@media (min-width: 768px) {
+@media (min-width: 768px) {
     #rotate {
         position: relative;
         background: #252525 url(../img/rotate.png) no-repeat center;
