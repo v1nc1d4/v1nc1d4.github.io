@@ -2,7 +2,14 @@
     "/norobots/": "http://v1nc1d4.github.io/404.html",
     "/assets/": "http://v1nc1d4.github.io/404.html",
     "/assets/css/": "http://v1nc1d4.github.io/404.html",
+    "/assets/css/404.css": "http://v1nc1d4.github.io/404.html",
+    "/assets/css/style.css": "http://v1nc1d4.github.io/404.html",
+    "/assets/css/jquery.pagepiling.css": "http://v1nc1d4.github.io/404.html",
+    "/assets/css/bootstrap.min.css": "http://v1nc1d4.github.io/404.html",
     "/assets/js/": "http://v1nc1d4.github.io/404.html",
+    "/assets/js/script.js": "http://v1nc1d4.github.io/404.html",
+    "/assets/js/bootstrap.min.js": "http://v1nc1d4.github.io/404.html",
+    "/assets/js/jquery.pagepiling.js": "http://v1nc1d4.github.io/404.html",
     "/assets/images/": "http://v1nc1d4.github.io/404.html",
     "/.github/": "http://v1nc1d4.github.io/404.html"
 }
