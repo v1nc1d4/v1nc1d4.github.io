@@ -219,7 +219,7 @@ figcaption a:hover {
 
 /* Small devices (landscape phones, 576px and up) */
 
-@media (max-width: 576px) {
+@media (max-width: 300px) {
     #rotate {
         position: relative;
         background: #252525 url(../img/rotate.png) no-repeat center;
@@ -235,7 +235,7 @@ figcaption a:hover {
     }
 }
 
-@media (max-width: 800px) and (max-height: 500px) {
+@media (max-width: 500px) and (max-height: 800px) {
     #btnContact,
     #home .social-media-buttons,
     .skills-item,
