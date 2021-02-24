@@ -26,7 +26,7 @@ $(document).ready(function() {
             alphaArea: '.6',
         },
         scaleK: {
-            labels: ['HTML & CSS', 'JavaScript', 'C', 'C++'],
+            labels: ['Photoshop', 'Illustrator', 'Dreamweaver', 'HTML', 'CSS', 'JavaScript'],
             item: {
                 fontColor: white,
                 rules: [{
@@ -54,7 +54,7 @@ $(document).ready(function() {
             }
         },
         series: [{
-            values: 0, 0, 0, 0, 0],
+            values: 70, 70, 60, 80, 75, 40],
             backgroundColor: lightRed,
             lineColor: lightRed,
             legendItem: {
