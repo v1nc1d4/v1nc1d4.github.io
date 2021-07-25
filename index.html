@@ -1,207 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru" class="v-page_home v-none-transition">
+    <head>
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 
-    <title>Welcome</title>
-    
-    <!-- Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato|Raleway" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <title>VINCIDA.ME</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="assets/css/jquery.pagepiling.css" />
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/style.css" />
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
-    <!-- JS: JQuery and Page Piling -->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript" src="assets/js/jquery.pagepiling.min.js"></script>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
 
-    <!-- Page Piling -->
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#pagepiling').pagepiling({
-                anchors: ['home', 'skills', 'works', 'contact'],
-                sectionsColor: ['#252525', '#252525', '#252525', '#252525'],
-                navigation: {
-                    'position': 'left',
-                    'tooltips': ['Home', 'Skills', 'Works', 'Contact']
-                },
-                loopTop: true,
-                loopBottom: true
-            });
-        });
-    </script>
-</head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="format-detection" content="telephone=no" />
 
-<body>
-    <div id="pagepiling">
-        <!-- Home Section -->
-        <div class="section text-center" id="home">
-            <h1 class="display-4">Hi, I'm <b>Anurag M</b></h1>
-            <h3>Graphic Designer</h3>
-            <p>Design with style | Design with smile</p>
-            <a href="#contact">
-                <button class="btn-wide" id="btnContact">CONTACT ME</button>
-            </a>
-            <div class="social-media-buttons">
-                <a target='_blank' href="https://github.com/v1nc1d4/">
-                    <i class="fa fa-github fa-3x"></i>
-                </a>
-                <a target='_blank' href="https://www.linkedin.com/in/v1nc1d4/">
-                    <i class="fa fa-linkedin fa-3x"></i>
-                </a>
-                <a target='_blank' href="https://twitter.com/v1nc1d4">
-                    <i class="fa fa-twitter fa-3x"></i>
-                </a>
-                <a target='_blank' href="https://instagram.com/v1nc1d4/">
-                    <i class="fa fa-instagram fa-3x"></i>
-                </a>
-                <a target='_blank' href="https://facebook.com/v1nc1d4">
-                    <i class="fa fa-facebook fa-3x"></i>
-                </a>
-            </div>
-        </div>
-        <!-- end Home Section -->
-        <!-- Skills Section -->
-        <div class="section container-fluid" id="skills">
-            <div class="row">
-                <div class="col-12 col-lg" id="skills-left">
-                    <h1>SKILLS</h1>
-                    <p>Some of the tools and programming languages I am familiar with.
-                    </p>
-                    <div class="skills-item">
-                        <div class="skills-item-head lead">
-                            Tools
-                        </div>
-                        <div class="skills-item-body">
-                            <p>Adobe Photoshop</p>
-                            <p>Adobe Illustrator</p>
-                            <p>Adobe Dreamweaver</p>
-                        </div>
+        <!-- Styles -->
+
+        <link rel="stylesheet" href="assets/css/slick-slick.css" />
+        <link rel="stylesheet" href="assets/css/slick-slick-theme.css" />
+        <link rel="stylesheet" href="assets/css/css-minified-index.css" />
+        <link rel="stylesheet" href="assets/css/built-cssAdditional.css" />
+
+        <!-- Facebook Pixel Code -->
+        <script>
+            !(function (f, b, e, v, n, t, s) {
+                if (f.fbq) return;
+                n = f.fbq = function () {
+                    n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+                };
+                if (!f._fbq) f._fbq = n;
+                n.push = n;
+                n.loaded = !0;
+                n.version = "2.0";
+                n.queue = [];
+                t = b.createElement(e);
+                t.async = !0;
+                t.src = v;
+                s = b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t, s);
+            })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+            fbq("init", "503614914261764");
+            fbq("track", "PageView");
+        </script>
+        <noscript><img height="1" width="1" style="display: none;" src="images/tr" /></noscript>
+        <!-- End Facebook Pixel Code -->
+    </head>
+
+    <body class="v-loading" data-v-console="false" data-v-page="home" data-v-tablet="1200" data-v-mobile="980">
+        <!-- IE -->
+
+        <!--[if (lt IE 9) | (IE 9)]>
+            <div class="v-oldbrowser">Your browser is too old.</div>
+        <![endif]-->
+
+        <!-- Wrapper -->
+
+        <canvas class="page__canvas fullHeight"></canvas>
+
+        <div class="page-wrap fullHeightMin" id="wrap">
+            <header class="v-header">
+                <div class="wrap">
+                    <div class="v-header__logo">VINCIDA.ME</div>
+                </div>
+            </header>
+            <div class="page__screen fullHeightMin" id="v-ajaxPage__outer">
+                <div class="default home fullHeightMin">
+                    <div class="home__text v-text_opacity">
+                        <p>
+                            Hello! <br />
+                            We create award—winning<br />
+                            websites, remarkable <br />
+                            brands and cutting-edge <br />
+                            apps.
+                        </p>
                     </div>
-                    <div class="skills-item">
-                        <div class="skills-item-head lead">
-                            Languages
-                        </div>
-                        <div class="skills-item-body">
-                            <p>HTML</p>
-                            <p>CSS</p>
-                            <p>JavaScript</p>
-                        </div>
+
+                    <div class="home__telephone v-text_opacity">
+                        <a href="tel:+91 80789 34429" class="line">+91 80789 34429</a>
                     </div>
-                </div>
-                <div class="col-12 col-lg" id="chartSkills">
-                </div>
-            </div>
-        </div>
-        <!-- end Skills Section -->
-        <!-- Works Section -->
-        <div class="section container-fluid" id="works">
-            <h1>WORKS</h1>
-            <p>Websites developed by me for educational purpose.</p>
-            <div class="row">
-                <div class="col">
-                    <figure>
-                        <img alt="satsc website" src="/assets/images/corvus.png">
-                        <figcaption>                     
-                            <h3>Corvus</h3>
-                            <p>Corvus is a covid 19 awareness website.</p>
-                            <p>The website provides basic information about covid-19 virus and also a live statistics of the pandemic all around the world.</p>
-                            <p>Website is built purely on html,css and javascript. Also amCharts provides the backend support for live statistics.</p>
-                            <a target="_blank" href="">Visit</a>
-                        </figcaption>
-                    </figure>
-                </div>
-                <div class="col">
-                    <figure>
-                        <img alt="affinitas website" src="/assets/images/cloud.png">
-                        <figcaption>
-                            <h3>Edu-Cloud</h3>
-                            <p>E-Learning website for toddlers.</p>
-                            <p>Edu-Cloud is designed for the Kids (Toddlers) to learn the Alphabet in more creative way.</p>
-                            <p>It also includes some nursery rhymes with images so that children can grasp more easily</p>
-                            <a target="_blank" href="">Visit</a>
-                        </figcaption>
-                    </figure>
-                </div>
-            </div>
-        </div>
-        <!-- end Works Section -->
-        <!-- Contact Section -->
-        <div class="section container-fluid" id="contact">
-            <div class="row">
-                <div class="col-xs-12 col-sm" id="contact-left">
-                    <h1>CONTACT</h1>
-                    <p>Wanna connect? Let's talk.
-                    
-           <!--<span style="color:#e84855">vincidadesigns@gmail.com</span>-->
-                    </p>
-                    <form method="POST" action="https://formspree.io/f/xpzoozdb">
-                        <div class="form-group row">
-                            <label for="name" class="col-lg-2">Name</label>
-                            <div class="col-lg-9">
-                                <input name="name" type="text" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="email" class="col-lg-2">Email</label>
-                            <div class="col-lg-9">
-                                <input name="email" type="email" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="subject" class="col-lg-2">Subject</label>
-                            <div class="col-lg-9">
-                                <input name="subject" type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="message" class="col-lg-2">Message</label>
-                            <div class="col-lg-9">
-                                <textarea name="message" class="form-control" required></textarea>
-                            </div>
-                        </div>
-                        <button class="btn-skinny" style="margin: 0 auto" type="submit">Send</button> 
-                    </form>
-                </div>
-                <div class="col-xs-12 col-sm text-center" id="contact-right">
-                    <h2><b>Anurag</b> M</h2>
-                    <p>Graphic Designer</p>
-                    <p>Experienced Campus Ambassador. Skilled in Web Content Writing, Graphic Design, and Technical Writing.</p>
-                    <p>Strong education professional pursuing Bachelor of Design focused in Multimedia Communication and Design from Central Institute of Technology, Kokrajhar.</p>
-                    <div class="social-media-buttons">
-                        <a target='_blank' href="https://github.com/v1nc1d4/">
-                            <i class="fa fa-github fa-3x"></i>
-                        </a>
-                        <a target='_blank' href="https://www.linkedin.com/in/v1nc1d4/">
-                            <i class="fa fa-linkedin fa-3x"></i>
-                        </a>
-                        <a target='_blank' href="https://twitter.com/v1nc1d4">
-                            <i class="fa fa-twitter fa-3x"></i>
-                        </a>
-                        <a target='_blank' href="https://instagram.com/v1nc1d4/">
-                            <i class="fa fa-instagram fa-3x"></i>
-                        </a>
-                        <a target='_blank' href="https://www.facebook.com/v1nc1d4">
-                            <i class="fa fa-facebook fa-3x"></i>
-                        </a>
+
+                    <ul class="home__list">
+                        <li>
+                            <a href="https://github.com/v1nc1d4/" data-color="rgba(23, 105, 255, .5)" target="_blank"><span>GITHUB</span></a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/v1nc1d4/" data-color="rgba(73, 197, 182, .5)" target="_blank"><span>TWITTER</span></a>
+                        </li>
+                        <li>
+                            <a href="https://www.linkedin.com/in/v1nc1d4/" data-color="rgba(234, 76, 137, .5)" target="_blank"><span>LINKEDIN</span></a>
+                        </li>
+                        <li>
+                            <a href="https://www.facebook.com/v1nc1d4/" data-color="rgba(88, 81, 219, .5)" target="_blank"><span>FACEBOOK</span></a>
+                        </li>
+                        <li>
+                            <a href="https://www.instagram.com/v1nc1d4/" data-color="rgba(59, 89, 152, .5)" target="_blank"><span>INSTAGRAM</span></a>
+                        </li>
+                    </ul>
+
+                    <div class="home__developing v-text_opacity">
+                        <p>
+                            New website is under development <br />
+                            In the meantime, you can visit <br />
+                            my social networks.
+                        </p>
+                    </div>
+
+                    <div class="home__see">
+                        <a href="portfolio.html" class="line" target="_blank">Portfolio</a>
+                    </div>
+
+                    <div class="home__email">
+                        <a href="mailto:vincidadesigns@gmail.com" class="line">vincidadesigns@gmail.com</a>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- end Contact Section -->
-    </div>
-    <div id="rotate"></div>
 
-    <!-- JavaScripts -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://cdn.zingchart.com/zingchart.min.js"></script>
-    <script type="text/javascript" src="assets/js/script.js"></script>
-</body>
+        <!-- Preloader -->
 
+        <div id="v-preloader" class="v-preloader v-preloader__item"></div>
+
+        <!-- Scripts -->
+
+        <script src="assets/js/js-jquery.js"></script>
+        <script src="assets/js/js-scrollbar.js"></script>
+        <script src="assets/js/slick-slick.js"></script>
+        <script src="assets/js/min-built.js"></script>
+    </body>
 </html>
