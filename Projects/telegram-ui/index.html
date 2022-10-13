@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Web UI</title>
+    <link rel="icon" href="assets/images/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css" type="text/css">
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet"> 
+
+    <!-- fontawesome script -->
+    <script src="https://kit.fontawesome.com/39350fd9df.js"></script>
+
+    <!-- script -->
+    <script src="main.js" defer></script>
+
+</head>
+
+<body>
+    <!-- two column layout with padding around-->
+    <div class="container-fluid">
+        <aside id="left">
+            <!-- width of 30% -->
+            <section id="appbar" class="appbar">
+                <div class="appbar__start flex">
+                    <!-- for back icon and settings -->
+                    <img src="assets/images/back_icon.svg" alt="back">
+                    <h3>Settings</h3>
+                </div>
+                <div class="appbar__middle flex">
+                    <!-- for user profile -->
+                    <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="user logo">
+                    <div>
+                        <h3>Jane Doe</h3>
+                        <a href="#">@janedoe</a>
+                    </div>
+                    <div>
+                        <img src="assets/images/edit_icon.svg" alt="edit_icon">
+                    </div>
+                </div>
+                <div class="appbar__end">
+                    <!--for searchbar-->
+                    <input type="search" name="query" id="searchbox" placeholder="Search">
+                    <img src="assets/images/search_icon.svg" alt="edit_icon">
+                </div>
+            </section>
+            <main class="navbar">
+                <section id="menu-top" class="menu-top">
+                    <!-- list of menu items -->
+                    <!--ul.nav>li*8>a[href="#"]>(img.icon+a[href=#])-->
+                    <ul class="nav">
+                        <li class="flex"><a href="#"><img src="assets/icons/1.png" alt="Notification and Sounds"
+                                    class="icon"><a href="#">Notification and Sounds</a></a></li>
+                        <li class="flex"><a href="#"><img src="assets/icons/2.png" alt="Privacy and Security"
+                                    class="icon"><a href="#">Privacy
+                                    and Security</a></a></li>
+                        <li class="flex"><a href="#"><img src="assets/icons/3.png" alt="Data and Storage"
+                                    class="icon"><a href="#">Data
+                                    and
+                                    Storage</a></a></li>
+                        <li class="flex"><a href="#"><img src="assets/icons/4.png" alt="Chat Settings" class="icon"><a
+                                    href="#">Chat
+                                    Settings</a></a></li>
+                        <li class="flex"><a href="#"><img src="assets/icons/5.png" alt="Stickers and Emoji"
+                                    class="icon"><a href="#">Stickers
+                                    and Emoji</a></a></li>
+                        <li class="flex"><a href="#"><img src="assets/icons/6.png" alt="chat Folders" class="icon"><a
+                                    href="#">chat
+                                    Folders</a></a></li>
+                        <li class="flex"><a href="#"><img src="assets/icons/7.png" alt="Devices" class="icon"><a
+                                    href="#">Devices</a></a>
+                        </li>
+                        <li class="flex"><a href="#"><img src="assets/icons/8.png" alt="Language" class="icon"><a
+                                    href="#">Language</a></a>
+                        <li class="flex active"><a href="#"><img src="assets/icons/premium.png" alt="Telegram Premium"
+                                    class="icon"><a href="#">Telegram
+                                    Premium</a></a>
+                        </li>
+                    </ul>
+                </section>
+                <section id="menu-bottom" class="menu-bottom">
+                    <!-- extra menu items section -->
+                    <h4>HELP</h4>
+                    <ul class="nav">
+                        <li class="flex"><a href="#"><img src="assets/icons/9.png" alt="Stickers and Emoji"
+                                    class="icon"><a href="#">Ask
+                                    a Question</a></a></li>
+                        <li class="flex"><a href="#"><img src="assets/icons/10.png" alt="chat Folders" class="icon"><a
+                                    href="#">Telegram
+                                    FAQ</a></a></li>
+                    </ul>
+                </section>
+            </main>
+        </aside>
+        <main id="right" class="content">
+            <!-- width of 70% -->
+            <header class="content__top flex">
+                <!-- top section -->
+                <img src="assets/icons/premium.png" alt="Telegram premium logo">
+                <div class="content__top--right">
+                    <h1>Telegram Premium</h1>
+                    <p>Go <strong>Beyond the limts</strong>, get <strong>exclusive features</strong> and support us by subscribing to <strong>Telegram Premium</strong>.</p>
+                </div>
+            </header>
+            <section class="content__middle">
+                <!-- middle - faq section -->
+                    <div class="faq-box hide">
+                        <div class="faq">
+                            <div class="flex">
+                                <img src="assets/images/faq_images/1.png" alt="Doubled limits">
+                                <h3 class="faq-title">Doubled Limits</h3>
+                            </div>
+                            <p class="faq-content">Up to 1000 channels, 20 folders, 10 pins, 20 public links, 4 accounts and more.</p>
+                        </div>
+                        
+                        <div class="faq">
+                            <div class="flex">
+                                <img src="assets/images/faq_images/2.png" alt="Animated Emojis">
+                                <h3 class="faq-title">Animated Emojis</h3>
+                            </div>
+                            <p class="faq-content">Include animated emoji from different packs in any message you send.</p>
+                        </div>
+                        
+                        <div class="faq">
+                            <div class="flex">
+                                <img src="assets/images/faq_images/3.png" alt="4GB Upload Size">
+                                <h3 class="faq-title">4GB Upload Size</h3>
+                            </div>
+                            <p class="faq-content">Increased upload size from 2 GB to 4 GB per document, unlimited storage overall.</p>
+                        </div>
+                        
+                        <div class="faq">
+                            <div class="flex">
+                                <img src="assets/images/faq_images/4.png" alt="Faster Download Speed">
+                                <h3 class="faq-title">Faster Download Speed</h3>
+                            </div>
+                            <p class="faq-content">No more limits on the speed with which media and documents are downloaded.</p>
+                        </div>
+                        
+                        <div class="faq">
+                            <div class="flex">
+                                <img src="assets/images/faq_images/5.png" alt="Voice to text conversion">
+                                <h3 class="faq-title">Voice to text conversion</h3>
+                            </div>
+                            <p class="faq-content">Ability to read the transcript of any incoming voice message.</p>
+                        </div>
+                        
+                        <div class="faq">
+                            <div class="flex">
+                                <img src="assets/images/faq_images/6.png" alt="No Ads">
+                                <h3 class="faq-title">No Ads</h3>
+                            </div>
+                            <p class="faq-content">No more ads in public channels where Telegram sometimes show ads.</p>
+                        </div>
+                        
+                        <div class="faq">
+                            <div class="flex">
+                                <img src="assets/images/faq_images/7.png" alt="Premium Stickers">
+                                <h3 class="faq-title">Premium Stickers</h3>
+                            </div>
+                            <p class="faq-content">Exclusive enlarged stickers featuring additional effects, updated monthly.</p>
+                        </div>
+                        
+                        <div class="faq">
+                            <div class="flex">
+                                <img src="assets/images/faq_images/8.png" alt="Advanced Chat Management">
+                                <h3 class="faq-title">Advanced Chat Management</h3>
+                            </div>
+                            <p class="faq-content">Tools to set the default folder, auto-archive and hide new chats from non-contacts.</p>
+                        </div>
+                        
+                        <div class="faq">
+                            <div class="flex">
+                                <img src="assets/images/faq_images/9.png" alt="Profile Badge">
+                                <h3 class="faq-title">Profile Badge</h3>
+                            </div>
+                            <p class="faq-content">A badge next to your name showing that you are helping support Telegram.</p>
+                        </div>
+                        
+                        <div class="faq">
+                            <div class="flex">
+                                <img src="assets/images/faq_images/10.png" alt="Animated Profile Pictures">
+                                <h3 class="faq-title">Animated Profile Pictures</h3>
+                            </div>
+                            <p class="faq-content">Video avatars animated in chat lists and chats to allow for additional self-expression.</p>
+                        </div>
+                    </div>
+            </section>
+            <footer class="content__bottom">
+                <!-- bottom section/button -->
+                <button><a href="#">Subscribe for ₹179.00 per month</a></button>
+                <!-- Attribution -->
+                <!-- <span><a href="https://iconscout.com/icons/telegram" target="_blank">Telegram Logo Icon</a> by <a href="https://iconscout.com/contributors/icon-mafia" target="_blank">Icon Mafia</a></span> -->
+            </footer>
+                
+        </main>
+    </div>
+
+</body>
+
+</html>
