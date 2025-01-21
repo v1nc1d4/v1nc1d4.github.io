@@ -21,9 +21,10 @@ jobs:
           git clone https://github.com/freddiebarrsmith/Ansible-Hidden-Service-Deployment.git
           cd Ansible-Hidden-Service-Deployment
 
-      - name: Configure Ansible Hosts
+      - name: Ensure Ansible Hosts File Exists
         run: |
-          echo "localhost ansible_connection=local" | sudo tee -a /etc/ansible/hosts
+          sudo mkdir -p /etc/ansible
+          echo "localhost ansible_connection=local" | sudo tee /etc/ansible/hosts
 
       - name: Run Ansible Playbook for Tor Hidden Service
         run: |
