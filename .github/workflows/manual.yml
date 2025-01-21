@@ -1,7 +1,7 @@
 # Author: anuragmuxui
 # GitHub Profile: https://github.com/anuragmuxui
 
-name: Deploy Tor
+name: Deploy Tor Hidden Service with Apache2
 
 on:
   schedule:
@@ -63,4 +63,4 @@ jobs:
 
     - name: Delay to keep server running
       run: |
-        sleep 18000 # keep the server running for 5 hour, you can adjust as necessary
+        sleep 3600 # keep the server running for 1 hour, you can adjust as necessary
