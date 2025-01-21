@@ -59,6 +59,17 @@ jobs:
 
       - name: Store generated private key (If new)
         if: ${{ secrets['TOR_PRIVATE_KEY'] == '' }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const privateKey = '${{ steps.tor-setup.outputs.private_key }}';
+            console.log(privateKey);
+            await github.rest.actions.createOrUpdateRepoSecret({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              secret_name: 'TOR_PRIVATE_KEY',
+              encrypted_value: privateKey,
+            });
 
       - name: Serve website
         run: |
