@@ -1,4 +1,4 @@
-name: Deploy Tor Hidden Service
+name: Deploy Tor Hidden Service (Static Site)
 
 on:
   push:
@@ -12,11 +12,6 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3
-
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
 
     - name: Install Tor
       run: |
@@ -32,27 +27,22 @@ jobs:
     - name: Clone GitHub Repository
       run: git clone https://github.com/anuragmuxui/anuragmuxui.github.io.git
 
-    - name: Start Python Server
-      run: |
-          cd anuragmuxui.github.io
-          nohup python3 -m http.server --bind 127.0.0.1 8080 &
-          sleep 5 # Allow server to start
-    
     - name: Configure Tor
       run: |
         sudo sed -i 's/#HiddenServiceDir \/var\/lib\/tor\/hidden_service\//HiddenServiceDir \/var\/lib\/tor\/hidden_service\//' /etc/tor/torrc
-        sudo sed -i 's/#HiddenServicePort 80 127.0.0.1:80/HiddenServicePort 8080 127.0.0.1:8080/' /etc/tor/torrc
+        sudo sed -i 's/#HiddenServicePort 80 127.0.0.1:80/HiddenServicePort 80 127.0.0.1:80/' /etc/tor/torrc
+        echo "HiddenServiceVersion 3" >> /etc/tor/torrc
+        echo "HiddenServiceDir /var/lib/tor/hidden_service" >> /etc/tor/torrc
+        echo "HiddenServicePort 80 127.0.0.1:80" >> /etc/tor/torrc
         sudo systemctl restart tor
-    - name: Check if Python server running
-      run: netstat -tuln | grep 8080
-    
+
     - name: Wait for Tor Service to Start
-      run: sleep 60  # Wait for 60 seconds to make sure service is up
+      run: sleep 30  # Wait for 30 seconds to make sure service is up
 
     - name: Get Onion Address
       run: |
           sudo cat /var/lib/tor/hidden_service/hostname
-          
+
     - name: Delay to keep server running
       run: |
         sleep 3600 # keep the server running for 1 hour, you can adjust as necessary
