@@ -29,7 +29,7 @@ jobs:
     
     - name: Copy Website to Apache2 Directory
       run: |
-        sudo cp -r tor/anuragmuxui.github.io/* /var/www/html/
+        sudo cp -r anuragmuxui.github.io/* /var/www/html/
         
     - name: Configure Apache2
       run: |
