@@ -10,52 +10,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install Tor
+      - name: Install Ansible and Dependencies
         run: |
           sudo apt-get update
+          sudo apt-get install -y ansible git apt-transport-https curl gnupg2
           sudo apt-get install -y tor
 
-      - name: Download GitHub Pages Content
+      - name: Clone the Ansible Playbook Repository
         run: |
-          # Clone the GitHub Pages content
-          git clone --depth 1 https://github.com/anuragmuxui/anuragmuxui.github.io.git site-content
-          ls site-content
+          git clone https://github.com/freddiebarrsmith/Ansible-Hidden-Service-Deployment.git
+          cd Ansible-Hidden-Service-Deployment
 
-      - name: Configure Tor (Without Private Key)
+      - name: Configure Ansible Hosts
         run: |
-            # Ensure tor directory exists
-            sudo mkdir -p /var/lib/tor
-            # Prepare Tor configuration file, exposing the static website
-            echo "HiddenServiceDir /var/lib/tor" | sudo tee /etc/tor/torrc
-            echo "HiddenServicePort 80 127.0.0.1:8080" | sudo tee -a /etc/tor/torrc
+          echo "localhost ansible_connection=local" | sudo tee -a /etc/ansible/hosts
 
-            # Start tor service in background
-            sudo systemctl restart tor
-
-            # Wait for Tor to start up and generate the address (with retry logic)
-            attempt=0
-            max_attempts=10
-            while [[ ! -f /var/lib/tor/hostname ]] && [[ $attempt -lt $max_attempts ]]; do
-                echo "Waiting for Tor to generate hostname..."
-                sleep 5
-                attempt=$((attempt + 1))
-            done
-
-            if [[ ! -f /var/lib/tor/hostname ]]; then
-                echo "Failed to generate Onion address within expected time."
-                exit 1
-            fi
-
-            ONION_ADDRESS=$(sudo cat /var/lib/tor/hostname)
-            echo "Onion address: $ONION_ADDRESS"
-            echo "::set-output name=onion_address::$ONION_ADDRESS"
-        id: tor-setup
-
-      - name: Serve website
+      - name: Run Ansible Playbook for Tor Hidden Service
         run: |
-          # Simple Python webserver serving cloned content
-          cd site-content
-          python3 -m http.server 8080 &
+          cd Ansible-Hidden-Service-Deployment
+          ansible-playbook darkweb.yml
+
+      - name: Serve Website
+        run: |
+          cd /home/tordir
+          python3 -m http.server 80 &
 
       - name: Display Onion Address
-        run: echo '${{ steps.tor-setup.outputs.onion_address }}'
+        run: |
+          cat /home/tordir/hostname
