@@ -20,7 +20,7 @@ jobs:
         git clone --depth 1 https://github.com/anuragmuxui/anuragmuxui.github.io.git site-content
         ls site-content
 
-        - name: Deploy to Tor
+    - name: Deploy to Tor
       run: |
         # Install Docker Engine
         sudo apt-get update
@@ -58,14 +58,15 @@ jobs:
           if [ -f hidden_service/hostname ]; then
             echo "Tor hidden service address:"
             cat hidden_service/hostname
-            exit 0
+            break
           fi
           sleep 10
         done
 
-        echo "Error: Hidden service address not found."
-        exit 1
-
+        if [ ! -f hidden_service/hostname ]; then
+          echo "Error: Hidden service address not found."
+          exit 1
+        fi
 
     - name: Save .onion Address
       uses: actions/upload-artifact@v3
