@@ -43,6 +43,11 @@ jobs:
         sudo sed -i 's/#HiddenServiceDir \/var\/lib\/tor\/hidden_service\//HiddenServiceDir \/var\/lib\/tor\/hidden_service\//' /etc/tor/torrc
         sudo sed -i 's/#HiddenServicePort 80 127.0.0.1:80/HiddenServicePort 8080 127.0.0.1:8080/' /etc/tor/torrc
         sudo systemctl restart tor
+
+    - name: Wait for Tor Service to Start
+      run: sleep 10  # Wait for 10 seconds to make sure service is up
+
+      
     - name: Get Onion Address
       run: |
           sudo cat /var/lib/tor/hidden_service/hostname
