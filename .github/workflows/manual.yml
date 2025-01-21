@@ -1,0 +1,66 @@
+# Author: anuragmuxui
+# GitHub Profile: https://github.com/anuragmuxui
+
+name: Deploy Tor
+
+on:
+  schedule:
+    - cron: '0 */5 * * *'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install Apache2 and Tor
+      run: |
+        sudo apt-get update
+        sudo apt-get install apache2 tor -y
+
+    - name: Create Tor Directory
+      run: mkdir tor
+    
+    - name: Enter Tor Directory
+      run: cd tor
+    
+    - name: Clone GitHub Repository
+      run: git clone https://github.com/${{ github.repository }}.git
+    
+    - name: Copy Website to Apache2 Directory
+      run: |
+        sudo cp -r $(basename ${{ github.repository }}).git/* /var/www/html/
+        
+    - name: Configure Apache2
+      run: |
+        sudo sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+        sudo systemctl restart apache2
+
+    - name: Configure Tor
+      run: |
+        sudo bash -c "sed -i 's/#HiddenServiceDir \/var\/lib\/tor\/hidden_service\//HiddenServiceDir \/var\/lib\/tor\/hidden_service\//' /etc/tor/torrc"
+        sudo bash -c "sed -i 's/#HiddenServicePort 80 127.0.0.1:80/HiddenServicePort 80 127.0.0.1:80/' /etc/tor/torrc"
+        sudo bash -c "echo 'HiddenServiceVersion 3' >> /etc/tor/torrc"
+        sudo bash -c "echo 'HiddenServiceDir /var/lib/tor/hidden_service' >> /etc/tor/torrc"
+        sudo bash -c "echo 'HiddenServicePort 80 127.0.0.1:80' >> /etc/tor/torrc"
+        sudo systemctl restart tor
+    
+    - name: Wait for Tor Service to Start
+      run: sleep 30  # Wait for 30 seconds to make sure service is up
+    
+    - name: Check Apache Status
+      run: sudo systemctl status apache2
+    
+    - name: Check Tor Status
+      run: sudo systemctl status tor
+
+    - name: Get Onion Address
+      run: |
+          sudo cat /var/lib/tor/hidden_service/hostname
+          
+
+    - name: Delay to keep server running
+      run: |
+        sleep 18000 # keep the server running for 5 hour, you can adjust as necessary
