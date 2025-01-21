@@ -35,13 +35,20 @@ jobs:
         sudo bash -c "echo 'HiddenServiceDir /var/lib/tor/hidden_service' >> /etc/tor/torrc"
         sudo bash -c "echo 'HiddenServicePort 80 127.0.0.1:80' >> /etc/tor/torrc"
         sudo systemctl restart tor
-
+    
     - name: Wait for Tor Service to Start
       run: sleep 30  # Wait for 30 seconds to make sure service is up
-
+    
+    - name: Check Tor Service Status
+      run: sudo systemctl status tor
+    - name: Check Tor Logs
+      run: sudo cat /var/log/tor/log
     - name: Get Onion Address
       run: |
           sudo cat /var/lib/tor/hidden_service/hostname
+
+    - name: Check Hidden Service Directory Permissions
+      run: ls -l /var/lib/tor/ | grep hidden_service
 
     - name: Delay to keep server running
       run: |
