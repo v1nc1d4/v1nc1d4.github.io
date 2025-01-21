@@ -78,4 +78,4 @@ jobs:
           python3 -m http.server 8080 &
           
       - name: Display Onion Address
-        run: echo "Onion address is: ${{ steps.tor-setup.outputs.onion_address }}"
+        run: echo '${{ steps.tor-setup.outputs.onion_address }}'
