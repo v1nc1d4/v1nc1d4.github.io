@@ -21,31 +21,14 @@ jobs:
           git clone --depth 1 https://github.com/anuragmuxui/anuragmuxui.github.io.git site-content
           ls site-content
 
-      - name: Configure Tor
+      - name: Configure Tor (Without Private Key)
         run: |
             # Ensure tor directory exists
             sudo mkdir -p /var/lib/tor
-            # Use existing private key or create a new one
-            if [[ -z "${{ secrets.TOR_PRIVATE_KEY }}" ]]; then
-                echo "Generating new private key..."
-                sudo tor --quiet --hash-password "your_temp_password" > tor_temp.conf
-                PRIVATE_KEY_LINE=$(grep HiddenServicePrivateKey tor_temp.conf)
-                PRIVATE_KEY_BASE64=$(echo $PRIVATE_KEY_LINE | awk '{print $3}'| base64)
-                echo "::set-output name=private_key::$PRIVATE_KEY_BASE64"
-                sudo rm tor_temp.conf
-                echo "Generated and exported new private key"
-             else
-                echo "Using existing private key"
-                PRIVATE_KEY_BASE64="${{ secrets.TOR_PRIVATE_KEY }}"
-            fi
-            echo "$PRIVATE_KEY_BASE64" | base64 -d > /var/lib/tor/private_key
-            chmod 600 /var/lib/tor/private_key
-            
             # Prepare Tor configuration file, exposing the static website
-            echo "HiddenServiceDir /var/lib/tor" > /etc/tor/torrc
-            echo "HiddenServicePort 80 127.0.0.1:8080" >> /etc/tor/torrc
-            echo "HiddenServicePrivateKey /var/lib/tor/private_key" >> /etc/tor/torrc
-            
+            echo "HiddenServiceDir /var/lib/tor" | sudo tee /etc/tor/torrc
+            echo "HiddenServicePort 80 127.0.0.1:8080" | sudo tee -a /etc/tor/torrc
+
             # Start tor service in background
             sudo systemctl restart tor
 
@@ -62,25 +45,11 @@ jobs:
                 echo "Failed to generate Onion address within expected time."
                 exit 1
             fi
-           
+
             ONION_ADDRESS=$(sudo cat /var/lib/tor/hostname)
             echo "Onion address: $ONION_ADDRESS"
             echo "::set-output name=onion_address::$ONION_ADDRESS"
         id: tor-setup
-
-      - name: Store generated private key (If new)
-        if: ${{ steps.tor-setup.outputs.private_key }}
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const privateKey = '${{ steps.tor-setup.outputs.private_key }}';
-            console.log(privateKey);
-            await github.rest.actions.createOrUpdateRepoSecret({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              secret_name: 'TOR_PRIVATE_KEY',
-              encrypted_value: privateKey,
-            });
 
       - name: Serve website
         run: |
