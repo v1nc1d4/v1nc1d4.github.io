@@ -26,7 +26,7 @@ jobs:
             # Ensure tor directory exists
             sudo mkdir -p /var/lib/tor
             # Use existing private key or create a new one
-            if [[ "${{ secrets['TOR_PRIVATE_KEY'] }}" == "" ]]; then
+            if [[ -z "${{ secrets.TOR_PRIVATE_KEY }}" ]]; then
                 echo "Generating new private key..."
                 sudo tor --quiet --hash-password "your_temp_password" > tor_temp.conf
                 PRIVATE_KEY_LINE=$(grep HiddenServicePrivateKey tor_temp.conf)
@@ -36,7 +36,7 @@ jobs:
                 echo "Generated and exported new private key"
              else
                 echo "Using existing private key"
-                PRIVATE_KEY_BASE64="${{ secrets['TOR_PRIVATE_KEY'] }}"
+                PRIVATE_KEY_BASE64="${{ secrets.TOR_PRIVATE_KEY }}"
             fi
             echo "$PRIVATE_KEY_BASE64" | base64 -d > /var/lib/tor/private_key
             chmod 600 /var/lib/tor/private_key
@@ -58,7 +58,7 @@ jobs:
         id: tor-setup
 
       - name: Store generated private key (If new)
-        if: ${{ secrets['TOR_PRIVATE_KEY'] == '' }}
+        if: ${{ steps.tor-setup.outputs.private_key }}
         uses: actions/github-script@v6
         with:
           script: |
