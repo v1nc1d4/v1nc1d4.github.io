@@ -34,7 +34,7 @@ jobs:
     
     - name: Copy Website to Apache2 Directory
       run: |
-        sudo cp -r $(basename ${{ github.repository }}).git/* /var/www/html/
+        sudo cp -r $(basename ${{ github.repository }})/* /var/www/html/
         
     - name: Configure Apache2
       run: |
