@@ -1,75 +1,81 @@
-name: Deploy GitHub Pages to Tor
+name: Deploy GitHub Pages from Git to Tor Onion Service
 
 on:
-  workflow_dispatch: # Manual trigger
   push:
     branches:
-      - main  # Trigger on pushes to the main branch
+      - main  # Or your main branch
 
 jobs:
-  deploy-to-tor:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
+      - name: Install Tor
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tor
 
-    - name: Download GitHub Pages Content
-      run: |
-        # Clone the GitHub Pages content
-        git clone --depth 1 https://github.com/anuragmuxui/anuragmuxui.github.io.git site-content
-        ls site-content
+      - name: Download GitHub Pages Content
+        run: |
+          # Clone the GitHub Pages content
+          git clone --depth 1 https://github.com/anuragmuxui/anuragmuxui.github.io.git site-content
+          ls site-content
 
-    - name: Deploy to Tor
-      run: |
-        # Install Docker Engine
-        sudo apt-get update
-        sudo apt-get install -y \
-          ca-certificates \
-          curl \
-          gnupg \
-          lsb-release
+      - name: Configure Tor
+        run: |
+            # Ensure tor directory exists
+            sudo mkdir -p /var/lib/tor
+            # Use existing private key or create a new one
+            if [[ "${{ secrets.TOR_PRIVATE_KEY }}" == "" ]]; then
+                echo "Generating new private key..."
+                sudo tor --quiet --hash-password "your_temp_password" > tor_temp.conf
+                PRIVATE_KEY_LINE=$(grep HiddenServicePrivateKey tor_temp.conf)
+                PRIVATE_KEY_BASE64=$(echo $PRIVATE_KEY_LINE | awk '{print $3}'| base64)
+                echo "::set-output name=private_key::$PRIVATE_KEY_BASE64"
+                sudo rm tor_temp.conf
+                echo "Generated and exported new private key"
+             else
+                echo "Using existing private key"
+                PRIVATE_KEY_BASE64="${{ secrets.TOR_PRIVATE_KEY }}"
+            fi
+            echo "$PRIVATE_KEY_BASE64" | base64 -d > /var/lib/tor/private_key
+            chmod 600 /var/lib/tor/private_key
+            
+            # Prepare Tor configuration file, exposing the static website
+            echo "HiddenServiceDir /var/lib/tor" > /etc/tor/torrc
+            echo "HiddenServicePort 80 127.0.0.1:8080" >> /etc/tor/torrc
+            echo "HiddenServicePrivateKey /var/lib/tor/private_key" >> /etc/tor/torrc
+            
+            # Start tor service in background
+            sudo systemctl restart tor
+            
+            # wait for tor to start up and generate the address
+            sleep 5
+           
+            ONION_ADDRESS=$(sudo cat /var/lib/tor/hostname)
+            echo "Onion address: $ONION_ADDRESS"
+            echo "::set-output name=onion_address::$ONION_ADDRESS"
+        id: tor-setup
 
-        # Create necessary directories
-        mkdir -p hidden_service
-        chmod 777 hidden_service
+      - name: Store generated private key (If new)
+        if: ${{ secrets.TOR_PRIVATE_KEY == '' }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const privateKey = '${{ steps.tor-setup.outputs.private_key }}';
+            console.log(privateKey);
+            await github.rest.actions.createOrUpdateRepoSecret({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              secret_name: 'TOR_PRIVATE_KEY',
+              encrypted_value: privateKey,
+            });
 
-        # Create a Docker network for Tor
-        docker network create tor_network || true
-
-        # Run a Tor container to generate a hidden service
-        docker run -d \
-          --name tor \
-          --network tor_network \
-          -v $(pwd)/hidden_service:/var/lib/tor/hidden_service \
-          dperson/torproxy \
-          -f "HiddenServiceDir /var/lib/tor/hidden_service\nHiddenServicePort 80 127.0.0.1:8080"
-
-        # Serve GitHub Pages content using an Nginx container
-        docker run -d \
-          --name static_server \
-          --network tor_network \
-          -v $(pwd)/site-content:/usr/share/nginx/html:ro \
-          nginx:alpine
-
-        # Wait for the .onion address to be generated
-        echo "Waiting for the .onion address to be generated..."
-        for i in {1..12}; do
-          if [ -f hidden_service/hostname ]; then
-            echo "Tor hidden service address:"
-            cat hidden_service/hostname
-            break
-          fi
-          sleep 10
-        done
-
-        if [ ! -f hidden_service/hostname ]; then
-          echo "Error: Hidden service address not found."
-          exit 1
-        fi
-
-    - name: Save .onion Address
-      uses: actions/upload-artifact@v3
-      with:
-        name: onion-address
-        path: hidden_service/hostname
+      - name: Serve website
+        run: |
+          # Simple Python webserver serving cloned content
+          cd site-content
+          python3 -m http.server 8080 &
+          
+      - name: Display Onion Address
+        run: echo "Onion address is: ${{ steps.tor-setup.outputs.onion_address }}"
