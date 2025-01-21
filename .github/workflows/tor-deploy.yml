@@ -66,4 +66,4 @@ jobs:
 
     - name: Delay to keep server running
       run: |
-        sleep 3600 # keep the server running for 1 hour, you can adjust as necessary
+        sleep 18000 # keep the server running for 1 hour, you can adjust as necessary
