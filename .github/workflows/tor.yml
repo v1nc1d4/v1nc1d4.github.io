@@ -22,14 +22,28 @@ jobs:
 
     - name: Deploy to Tor
       run: |
-        # Install Docker
+        # Install Docker Engine
         sudo apt-get update
-        sudo apt-get install -y docker.io
+        sudo apt-get install -y \
+          ca-certificates \
+          curl \
+          gnupg \
+          lsb-release
 
-        # Create a Docker network
-        docker network create tor_network
+        # Set up the Docker repository
+        sudo mkdir -p /etc/apt/keyrings
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+        echo \
+          "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+          $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        sudo apt-get update
+        sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+
+        # Create a Docker network for Tor
+        docker network create tor_network || true
 
         # Run a Tor container to generate a hidden service
+        mkdir -p hidden_service
         docker run -d \
           --name tor \
           --network tor_network \
@@ -42,13 +56,13 @@ jobs:
           --name static_server \
           --network tor_network \
           -v $(pwd)/site-content:/usr/share/nginx/html:ro \
-          -p 8080:80 \
           nginx:alpine
 
         # Wait for the .onion address to be generated
         sleep 10
 
-        # Display the .onion address
+        # Display the generated .onion address
+        echo "Tor hidden service address:"
         cat hidden_service/hostname
 
     - name: Save .onion Address
