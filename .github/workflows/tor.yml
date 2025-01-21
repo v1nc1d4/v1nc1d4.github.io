@@ -39,11 +39,14 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
+        # Create necessary directories
+        mkdir -p hidden_service
+        chmod 777 hidden_service
+
         # Create a Docker network for Tor
         docker network create tor_network || true
 
         # Run a Tor container to generate a hidden service
-        mkdir -p hidden_service
         docker run -d \
           --name tor \
           --network tor_network \
@@ -59,11 +62,18 @@ jobs:
           nginx:alpine
 
         # Wait for the .onion address to be generated
-        sleep 10
+        echo "Waiting for the .onion address to be generated..."
+        sleep 30
 
         # Display the generated .onion address
-        echo "Tor hidden service address:"
-        cat hidden_service/hostname
+        if [ -f hidden_service/hostname ]; then
+          echo "Tor hidden service address:"
+          cat hidden_service/hostname
+        else
+          echo "Error: Hidden service address not found."
+          exit 1
+        fi
+
 
     - name: Save .onion Address
       uses: actions/upload-artifact@v3
