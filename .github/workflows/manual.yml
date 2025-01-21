@@ -48,7 +48,7 @@ jobs:
       run: netstat -tuln | grep 8080
     
     - name: Wait for Tor Service to Start
-      run: sleep 30  # Wait for 30 seconds to make sure service is up
+      run: sleep 60  # Wait for 60 seconds to make sure service is up
 
     - name: Get Onion Address
       run: |
