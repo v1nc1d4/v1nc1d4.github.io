@@ -1,4 +1,4 @@
-name: Deploy Tor Hidden Service (Static Site)
+name: Deploy Tor Hidden Service with Apache2
 
 on:
   push:
@@ -13,10 +13,10 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
 
-    - name: Install Tor
+    - name: Install Apache2 and Tor
       run: |
         sudo apt-get update
-        sudo apt-get install tor -y
+        sudo apt-get install apache2 tor -y
 
     - name: Create Tor Directory
       run: mkdir tor
@@ -26,6 +26,15 @@ jobs:
     
     - name: Clone GitHub Repository
       run: git clone https://github.com/anuragmuxui/anuragmuxui.github.io.git
+    
+    - name: Copy Website to Apache2 Directory
+      run: |
+        sudo cp -r tor/anuragmuxui.github.io/* /var/www/html/
+        
+    - name: Configure Apache2
+      run: |
+        sudo sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+        sudo systemctl restart apache2
 
     - name: Configure Tor
       run: |
@@ -39,16 +48,15 @@ jobs:
     - name: Wait for Tor Service to Start
       run: sleep 30  # Wait for 30 seconds to make sure service is up
     
-    - name: Check Tor Service Status
+    - name: Check Apache Status
+      run: sudo systemctl status apache2
+    - name: Check Tor Status
       run: sudo systemctl status tor
-    - name: Check Tor Logs
-      run: sudo cat /var/log/tor/log
+
     - name: Get Onion Address
       run: |
           sudo cat /var/lib/tor/hidden_service/hostname
-
-    - name: Check Hidden Service Directory Permissions
-      run: ls -l /var/lib/tor/ | grep hidden_service
+          
 
     - name: Delay to keep server running
       run: |
