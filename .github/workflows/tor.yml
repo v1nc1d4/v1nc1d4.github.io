@@ -48,9 +48,20 @@ jobs:
             
             # Start tor service in background
             sudo systemctl restart tor
-            
-            # wait for tor to start up and generate the address
-            sleep 5
+
+            # Wait for Tor to start up and generate the address (with retry logic)
+            attempt=0
+            max_attempts=10
+            while [[ ! -f /var/lib/tor/hostname ]] && [[ $attempt -lt $max_attempts ]]; do
+                echo "Waiting for Tor to generate hostname..."
+                sleep 5
+                attempt=$((attempt + 1))
+            done
+
+            if [[ ! -f /var/lib/tor/hostname ]]; then
+                echo "Failed to generate Onion address within expected time."
+                exit 1
+            fi
            
             ONION_ADDRESS=$(sudo cat /var/lib/tor/hostname)
             echo "Onion address: $ONION_ADDRESS"
