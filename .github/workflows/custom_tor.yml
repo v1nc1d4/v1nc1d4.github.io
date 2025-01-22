@@ -41,12 +41,18 @@ jobs:
           sudo sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
           sudo systemctl restart apache2
 
-      - name: Configure Tor with Existing .onion Address
+      - name: Create Hidden Service Directory
+        run: sudo mkdir -p /var/lib/tor/hidden_service
+
+      - name: Configure Tor with RSA Key Decoded from Base64
         env:
-          TOR_HOSTNAME: ${{ secrets.TOR_HOSTNAME }}
+          TOR_PRIVATE_KEY: ${{ secrets.TOR_PRIVATE_KEY }}
         run: |
-          sudo mkdir /var/lib/tor/hidden_service
-          echo "${TOR_HOSTNAME}" | sudo tee /var/lib/tor/hidden_service/hostname
+          echo "${{ env.TOR_PRIVATE_KEY }}" | base64 -d -i | sudo tee /var/lib/tor/hidden_service/hs_ed25519_secret_key
+          sudo systemctl restart tor
+
+      - name: Configure Tor
+        run: |
           sudo bash -c "sed -i 's/#HiddenServiceDir \/var\/lib\/tor\/hidden_service\//HiddenServiceDir \/var\/lib\/tor\/hidden_service\//' /etc/tor/torrc"
           sudo bash -c "sed -i 's/#HiddenServicePort 80 127.0.0.1:80/HiddenServicePort 80 127.0.0.1:80/' /etc/tor/torrc"
           sudo bash -c "echo 'HiddenServiceVersion 3' >> /etc/tor/torrc"
@@ -66,7 +72,6 @@ jobs:
       - name: Get Onion Address
         run: |
           sudo cat /var/lib/tor/hidden_service/hostname
-          sudo ls /var/lib/tor/hidden_service/
 
       - name: Delay to keep server running
         run: |
