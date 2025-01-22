@@ -4,7 +4,7 @@
 name: Deploy Tor Hidden Service with Apache2
 
 on: 
-    push:
+  push:
     branches:
       - main # or your main branch name
   schedule:
