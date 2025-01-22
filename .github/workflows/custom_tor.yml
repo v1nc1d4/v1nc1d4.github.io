@@ -54,7 +54,7 @@ jobs:
           sudo bash -c "echo 'HiddenServiceVersion 3' >> /etc/tor/torrc"
           sudo bash -c "echo 'HiddenServiceDir /var/lib/tor/hidden_service' >> /etc/tor/torrc"
           sudo bash -c "echo 'HiddenServicePort 80 127.0.0.1:80' >> /etc/tor/torrc"
-          echo "${{ env.TOR_PRIVATE_KEY }}" | base64 -d -i | sudo tee /var/lib/tor/hidden_service/hs_ed25519_secret_key
+          echo "${{ env.TOR_PRIVATE_KEY }}" | base64 -d -i | sudo tee /var/lib/tor/hidden_service/private_key
           echo "${{ env.TOR_HOSTNAME }}" | sudo tee /var/lib/tor/hidden_service/hostname
           sudo systemctl restart tor
     
