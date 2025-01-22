@@ -43,9 +43,9 @@ jobs:
         sudo a2enmod headers
         sudo bash -c "cat > /etc/apache2/sites-available/000-default.conf <<EOL
         <VirtualHost *:80>
-            ServerName $(basename ${{ github.repository }}).github.io
-            ProxyPass / http://$(basename ${{ github.repository }}).github.io/
-            ProxyPassReverse / http://$(basename ${{ github.repository }}).github.io/
+            ServerName $(basename ${{ github.repository }})
+            ProxyPass / http://$(basename ${{ github.repository }})
+            ProxyPassReverse / http://$(basename ${{ github.repository }})/
             Header set Onion-Location \"http://\${ONION_ADDRESS}\"
         </VirtualHost>
         EOL"
