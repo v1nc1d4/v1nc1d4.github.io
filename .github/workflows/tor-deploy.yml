@@ -38,7 +38,17 @@ jobs:
 
     - name: Configure Apache2
       run: |
-        sudo sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+        sudo a2enmod proxy
+        sudo a2enmod proxy_http
+        sudo a2enmod headers
+        sudo bash -c "cat > /etc/apache2/sites-available/000-default.conf <<EOL
+        <VirtualHost *:80>
+            ServerName $(basename ${{ github.repository }}).github.io
+            ProxyPass / http://$(basename ${{ github.repository }}).github.io/
+            ProxyPassReverse / http://$(basename ${{ github.repository }}).github.io/
+            Header set Onion-Location \"http://\${ONION_ADDRESS}\"
+        </VirtualHost>
+        EOL"
         sudo systemctl restart apache2
 
     - name: Configure Tor
@@ -63,11 +73,11 @@ jobs:
       id: get_onion_address
       run: |
         onion_address=$(sudo cat /var/lib/tor/hidden_service/hostname)
-        echo "::set-output name=onion_address::$onion_address"
+        echo "ONION_ADDRESS=$onion_address" >> $GITHUB_ENV
 
     - name: Set Onion-Location Header
       run: |
-        sudo bash -c "echo 'Header set Onion-Location http://${{ steps.get_onion_address.outputs.onion_address }}' >> /etc/apache2/sites-available/000-default.conf"
+        sudo sed -i "s/\${ONION_ADDRESS}/$(echo ${{ github.repository }}).github.io/" /etc/apache2/sites-available/000-default.conf
         sudo systemctl restart apache2
 
     - name: Delay to keep server running
