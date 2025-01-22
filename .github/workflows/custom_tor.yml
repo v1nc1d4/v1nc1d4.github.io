@@ -38,6 +38,12 @@ jobs:
         sudo sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
         sudo systemctl restart apache2
 
+    - name: Create Hidden Service Directory
+      run: sudo mkdir -p /var/lib/tor/hidden_service
+
+    - name: Set Permissions for Hidden Service Directory
+      run: sudo chmod 700 /var/lib/tor/hidden_service
+
     - name: Configure Tor
       run: |
         sudo bash -c "sed -i 's/#HiddenServiceDir \/var\/lib\/tor\/hidden_service\//HiddenServiceDir \/var\/lib\/tor\/hidden_service\//' /etc/tor/torrc"
@@ -78,6 +84,7 @@ jobs:
       run: | 
         sleep 30  # Wait for 30 seconds to make sure service is up
         sudo cat /var/lib/tor/hidden_service/hostname
+        sudo cat /etc/tor/torrc
       shell: bash
         
     - name: Check Apache Status
