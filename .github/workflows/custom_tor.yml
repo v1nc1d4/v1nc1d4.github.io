@@ -90,6 +90,14 @@ jobs:
       run: sudo systemctl status tor
       shell: bash
       
+    - name: Check Apache2 Configuration
+      run: sudo cat /etc/apache2/apache2.conf
+      shell: bash
+      
+    - name: Check Tor Logs
+      run: sudo journalctl -u tor --no-pager 
+      shell: bash
+      
     - name: Get Onion Address
       run: |
         sudo cat /var/lib/tor/hidden_service/hostname
