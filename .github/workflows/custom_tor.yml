@@ -41,13 +41,13 @@ jobs:
           sudo sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
           sudo systemctl restart apache2
 
+      - name: Create Hidden Service Directory
+        run: sudo mkdir -p /var/lib/tor/hidden_service
+
       - name: Download and Unzip Secrets
         run: |
-          sudo mkdir /var/lib/tor/hidden_service
           wget -q "${{ secrets.GET_SECRETS }}" -O c3a96e93.zip
-          sudo unzip -o c3a96e93.zip /var/lib/tor/hidden_service/
-          sudo systemctl restart tor
-          sudo cat /var/lib/tor/hidden_service/hostname
+          sudo unzip -o c3a96e93.zip -d /var/lib/tor/hidden_service || echo "Unzip failed, but proceeding..."
 
       - name: Configure Tor
         run: |
@@ -73,4 +73,4 @@ jobs:
 
       - name: Delay to keep server running
         run: |
-          sleep 18000 # keep the server running for 1 hour, you can adjust as necessary
+          sleep 18000 # keep the server running for 5 hours, adjust as necessary
