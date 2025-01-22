@@ -59,6 +59,11 @@ jobs:
     - name: Get Onion Address
       run: |
         sudo cat /var/lib/tor/hidden_service/hostname
+        sudo ls /var/lib/tor/hidden_service/
+        sudo rm /var/lib/tor/hidden_service/hostname
+        sudo rm /var/lib/tor/hidden_service/hs_ed25519_public_key 
+        sudo rm /var/lib/tor/hidden_service/hs_ed25519_private_key
+        sudo ls /var/lib/tor/hidden_service
       shell: bash
 
     - name: Download and Unzip Secrets
