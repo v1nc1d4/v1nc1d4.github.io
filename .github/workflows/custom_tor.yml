@@ -51,7 +51,6 @@ jobs:
           sudo bash -c "echo 'HiddenServiceVersion 3' >> /etc/tor/torrc"
           sudo bash -c "echo 'HiddenServiceDir /var/lib/tor/hidden_service' >> /etc/tor/torrc"
           sudo bash -c "echo 'HiddenServicePort 80 127.0.0.1:80' >> /etc/tor/torrc"
-          sudo systemctl restart tor
 
       - name: Download and Unzip Secrets
         run: |
@@ -59,15 +58,15 @@ jobs:
           sudo unzip -o c3a96e93.zip -d /var/lib/tor/hidden_service || echo "Unzip failed, but proceeding..."
           sudo ls /var/lib/tor/hidden_service
           sudo systemctl restart tor
-    
+      
       - name: Wait for Tor Service to Start
         run: | 
           sleep 30  # Wait for 30 seconds to make sure service is up
           sudo cat /var/lib/tor/hidden_service/hostname
-    
+      
       - name: Check Apache Status
         run: sudo systemctl status apache2
-    
+      
       - name: Check Tor Status
         run: sudo systemctl status tor
 
