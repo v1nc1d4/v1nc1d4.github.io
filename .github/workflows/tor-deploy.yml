@@ -25,17 +25,17 @@ jobs:
 
     - name: Create Tor Directory
       run: mkdir tor
-    
+
     - name: Enter Tor Directory
       run: cd tor
-    
+
     - name: Clone GitHub Repository
       run: git clone https://github.com/${{ github.repository }}.git
-    
+
     - name: Copy Website to Apache2 Directory
       run: |
         sudo cp -r $(basename ${{ github.repository }})/* /var/www/html/
-        
+
     - name: Configure Apache2
       run: |
         sudo sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
@@ -49,20 +49,26 @@ jobs:
         sudo bash -c "echo 'HiddenServiceDir /var/lib/tor/hidden_service' >> /etc/tor/torrc"
         sudo bash -c "echo 'HiddenServicePort 80 127.0.0.1:80' >> /etc/tor/torrc"
         sudo systemctl restart tor
-    
+
     - name: Wait for Tor Service to Start
       run: sleep 30  # Wait for 30 seconds to make sure service is up
-    
+
     - name: Check Apache Status
       run: sudo systemctl status apache2
-    
+
     - name: Check Tor Status
       run: sudo systemctl status tor
 
     - name: Get Onion Address
+      id: get_onion_address
       run: |
-          sudo cat /var/lib/tor/hidden_service/hostname
-          
+        onion_address=$(sudo cat /var/lib/tor/hidden_service/hostname)
+        echo "::set-output name=onion_address::$onion_address"
+
+    - name: Set Onion-Location Header
+      run: |
+        sudo bash -c "echo 'Header set Onion-Location http://${{ steps.get_onion_address.outputs.onion_address }}' >> /etc/apache2/sites-available/000-default.conf"
+        sudo systemctl restart apache2
 
     - name: Delay to keep server running
       run: |
