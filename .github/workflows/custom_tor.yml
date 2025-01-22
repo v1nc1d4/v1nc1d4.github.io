@@ -40,12 +40,12 @@ jobs:
         sudo sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
         sudo systemctl restart apache2
 
-    - name: Configure Tor with Environment Variables
+    - name: Configure Tor with RSA Key Decoded from Base64
       env:
         TOR_HOSTNAME: ${{ secrets.TOR_HOSTNAME }}
         TOR_PRIVATE_KEY: ${{ secrets.TOR_PRIVATE_KEY }}
       run: |
-        echo "${{ env.TOR_PRIVATE_KEY }}" | sudo tee /var/lib/tor/hidden_service/private_key
+        echo "${{ env.TOR_PRIVATE_KEY }}" | base64 -d -i | sudo tee /var/lib/tor/hidden_service/private_key
         echo "${{ env.TOR_HOSTNAME }}" | sudo tee /var/lib/tor/hidden_service/hostname
         sudo bash -c "sed -i 's/#HiddenServiceDir \/var\/lib\/tor\/hidden_service\//HiddenServiceDir \/var\/lib\/tor\/hidden_service\//' /etc/tor/torrc"
         sudo bash -c "sed -i 's/#HiddenServicePort 80 127.0.0.1:80/HiddenServicePort 80 127.0.0.1:80/' /etc/tor/torrc"
