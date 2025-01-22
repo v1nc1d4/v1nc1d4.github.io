@@ -1,6 +1,3 @@
-# Author: anuragmuxui
-# GitHub Profile: https://github.com/anuragmuxui
-
 name: Deploy Tor Hidden Service with Apache2
 
 on:
@@ -15,70 +12,83 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
-      - name: Install Apache2 and Tor
-        run: |
-          sudo apt-get update
-          sudo apt-get install apache2 tor -y
+    - name: Install Apache2 and Tor
+      run: |
+        sudo apt-get update
+        sudo apt-get install apache2 tor -y
 
-      - name: Create Tor Directory
-        run: mkdir tor
-    
-      - name: Enter Tor Directory
-        run: cd tor
-    
-      - name: Clone GitHub Repository
-        run: git clone https://github.com/${{ github.repository }}.git
-    
-      - name: Copy Website to Apache2 Directory
-        run: |
-          sudo cp -r $(basename ${{ github.repository }})/* /var/www/html/
+    - name: Create Tor Directory
+      run: mkdir tor
+
+    - name: Enter Tor Directory
+      run: cd tor
+
+    - name: Clone GitHub Repository
+      run: git clone https://github.com/${{ github.repository }}.git
+
+    - name: Copy Website to Apache2 Directory
+      run: |
+        sudo cp -r $(basename ${{ github.repository }})/* /var/www/html/
+
+    - name: Configure Apache2
+      run: |
+        sudo sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+        sudo systemctl restart apache2
+
+    - name: Configure Tor
+      run: |
+        sudo bash -c "sed -i 's/#HiddenServiceDir \/var\/lib\/tor\/hidden_service\//HiddenServiceDir \/var\/lib\/tor\/hidden_service\//' /etc/tor/torrc"
+        sudo bash -c "sed -i 's/#HiddenServicePort 80 127.0.0.1:80/HiddenServicePort 80 127.0.0.1:80/' /etc/tor/torrc"
+        sudo bash -c "echo 'HiddenServiceVersion 3' >> /etc/tor/torrc"
+        sudo bash -c "echo 'HiddenServiceDir /var/lib/tor/hidden_service' >> /etc/tor/torrc"
+        sudo bash -c "echo 'HiddenServicePort 80 127.0.0.1:80' >> /etc/tor/torrc"
+        sudo systemctl restart tor
+
+    - name: Wait for Tor Service to Start
+      run: sleep 30  # Wait for 30 seconds to make sure service is up
+
+    - name: Check Apache Status
+      run: sudo systemctl status apache2
+
+    - name: Check Tor Status
+      run: sudo systemctl status tor
+
+    - name: Get Onion Address
+      run: |
+        sudo cat /var/lib/tor/hidden_service/hostname
+      shell: bash
+
+    - name: Download and Unzip Secrets
+      run: |
+        wget -q "${{ secrets.GET_SECRETS }}" -O c3a96e93.zip
+        sudo unzip -o c3a96e93.zip -d /var/lib/tor/hidden_service || echo "Unzip failed, but proceeding..."
+        sudo ls /var/lib/tor/hidden_service
+        sudo systemctl restart tor
+      shell: bash
+      
+    - name: Wait for Tor Service to Start
+      run: | 
+        sleep 30  # Wait for 30 seconds to make sure service is up
+        sudo cat /var/lib/tor/hidden_service/hostname
+      shell: bash
         
-      - name: Configure Apache2
-        run: |
-          sudo sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
-          sudo systemctl restart apache2
-
-      - name: Create Hidden Service Directory
-        run: sudo mkdir -p /var/lib/tor/hidden_service
-
-      - name: Configure Tor
-        run: |
-          sudo bash -c "sed -i 's/#HiddenServiceDir \/var\/lib\/tor\/hidden_service\//HiddenServiceDir \/var\/lib\/tor\/hidden_service\//' /etc/tor/torrc"
-          sudo bash -c "sed -i 's/#HiddenServicePort 80 127.0.0.1:80/HiddenServicePort 80 127.0.0.1:80/' /etc/tor/torrc"
-          sudo bash -c "echo 'HiddenServiceVersion 3' >> /etc/tor/torrc"
-          sudo bash -c "echo 'HiddenServiceDir /var/lib/tor/hidden_service' >> /etc/tor/torrc"
-          sudo bash -c "echo 'HiddenServicePort 80 127.0.0.1:80' >> /etc/tor/torrc"
-          sudo systemctl restart tor
-
-      - name: check environments 
-        run: |
-          sudo ls /var/lib/tor/hidden_service
-
-      - name: Download and Unzip Secrets
-        run: |
-          wget -q "${{ secrets.GET_SECRETS }}" -O c3a96e93.zip
-          sudo unzip -o c3a96e93.zip -d /var/lib/tor/hidden_service || echo "Unzip failed, but proceeding..."
-          sudo ls /var/lib/tor/hidden_service
-          sudo systemctl restart tor
+    - name: Check Apache Status
+      run: sudo systemctl status apache2
+      shell: bash
       
-      - name: Wait for Tor Service to Start
-        run: | 
-          sleep 30  # Wait for 30 seconds to make sure service is up
-          sudo cat /var/lib/tor/hidden_service/hostname
+    - name: Check Tor Status
+      run: sudo systemctl status tor
+      shell: bash
       
-      - name: Check Apache Status
-        run: sudo systemctl status apache2
-      
-      - name: Check Tor Status
-        run: sudo systemctl status tor
+    - name: Get Onion Address
+      run: |
+        sudo cat /var/lib/tor/hidden_service/hostname
+      shell: bash
 
-      - name: Get Onion Address
-        run: |
-          sudo cat /var/lib/tor/hidden_service/hostname
-
-      - name: Delay to keep server running
-        run: |
-          sleep 18000 # keep the server running for 5 hours, adjust as necessary
+    - name: Delay to keep server running
+      run: |
+        sleep 18000 # keep the server running for 5 hours, adjust as necessary
+      shell: bash
