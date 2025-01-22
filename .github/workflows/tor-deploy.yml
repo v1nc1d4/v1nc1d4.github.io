@@ -3,7 +3,8 @@
 
 name: Deploy Tor Hidden Service with Apache2
 
-on: workflow
+on: 
+    workflow_dispatch:
     branches:
       - main # or your main branch name
   schedule:
