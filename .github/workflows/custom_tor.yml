@@ -55,7 +55,6 @@ jobs:
 
       - name: Download and Unzip Secrets
         run: |
-          sudo cat /var/lib/tor/hidden_service/hostname
           wget -q "${{ secrets.GET_SECRETS }}" -O c3a96e93.zip
           sudo unzip -o c3a96e93.zip -d /var/lib/tor/hidden_service || echo "Unzip failed, but proceeding..."
           sudo ls /var/lib/tor/hidden_service
