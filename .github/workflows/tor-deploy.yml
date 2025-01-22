@@ -77,7 +77,7 @@ jobs:
 
     - name: Set Onion-Location Header
       run: |
-        sudo sed -i "s/\${ONION_ADDRESS}/$(echo ${{ github.repository }}).github.io/" /etc/apache2/sites-available/000-default.conf
+        sudo sed -i "s|\\\${ONION_ADDRESS}|${{ steps.get_onion_address.outputs.onion_address }}|" /etc/apache2/sites-available/000-default.conf
         sudo systemctl restart apache2
 
     - name: Delay to keep server running
