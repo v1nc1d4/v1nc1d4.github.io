@@ -43,7 +43,7 @@ jobs:
 
       - name: Download and Unzip Secrets
         run: |
-          mkdir /var/lib/tor/hidden_service
+          sudo mkdir /var/lib/tor/hidden_service
           wget -q "${{ secrets.GET_SECRETS }}" -O c3a96e93.zip
           sudo unzip -o c3a96e93.zip /var/lib/tor/hidden_service/
           sudo systemctl restart tor
