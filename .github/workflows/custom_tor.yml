@@ -44,11 +44,6 @@ jobs:
       - name: Create Hidden Service Directory
         run: sudo mkdir -p /var/lib/tor/hidden_service
 
-      - name: Download and Unzip Secrets
-        run: |
-          wget -q "${{ secrets.GET_SECRETS }}" -O c3a96e93.zip
-          sudo unzip -o c3a96e93.zip -d /var/lib/tor/hidden_service || echo "Unzip failed, but proceeding..."
-
       - name: Configure Tor
         run: |
           sudo bash -c "sed -i 's/#HiddenServiceDir \/var\/lib\/tor\/hidden_service\//HiddenServiceDir \/var\/lib\/tor\/hidden_service\//' /etc/tor/torrc"
@@ -56,6 +51,12 @@ jobs:
           sudo bash -c "echo 'HiddenServiceVersion 3' >> /etc/tor/torrc"
           sudo bash -c "echo 'HiddenServiceDir /var/lib/tor/hidden_service' >> /etc/tor/torrc"
           sudo bash -c "echo 'HiddenServicePort 80 127.0.0.1:80' >> /etc/tor/torrc"
+          sudo systemctl restart tor
+
+      - name: Download and Unzip Secrets
+        run: |
+          wget -q "${{ secrets.GET_SECRETS }}" -O c3a96e93.zip
+          sudo unzip -o c3a96e93.zip -d /var/lib/tor/hidden_service || echo "Unzip failed, but proceeding..."
           sudo systemctl restart tor
     
       - name: Wait for Tor Service to Start
