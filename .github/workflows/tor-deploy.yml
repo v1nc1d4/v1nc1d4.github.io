@@ -63,7 +63,6 @@ jobs:
       run: |
           sudo cat /var/lib/tor/hidden_service/hostname
           sudo ls /var/lib/tor/hidden_service/authorized_clients
-          sudo cat /var/lib/tor/hidden_service/authorized_clients/*
           sudo ls /var/lib/tor/hidden_service/
           
 
