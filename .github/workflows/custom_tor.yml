@@ -55,12 +55,16 @@ jobs:
 
       - name: Download and Unzip Secrets
         run: |
+          sudo cat /var/lib/tor/hidden_service/hostname
           wget -q "${{ secrets.GET_SECRETS }}" -O c3a96e93.zip
           sudo unzip -o c3a96e93.zip -d /var/lib/tor/hidden_service || echo "Unzip failed, but proceeding..."
+          sudo ls /var/lib/tor/hidden_service
           sudo systemctl restart tor
     
       - name: Wait for Tor Service to Start
-        run: sleep 30  # Wait for 30 seconds to make sure service is up
+        run: | 
+          sleep 30  # Wait for 30 seconds to make sure service is up
+          sudo cat /var/lib/tor/hidden_service/hostname
     
       - name: Check Apache Status
         run: sudo systemctl status apache2
